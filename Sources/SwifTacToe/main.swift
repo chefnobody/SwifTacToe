@@ -10,6 +10,25 @@ enum BoardPosition: Int {
   case bottomRight = 9
 }
 
+let possibleSolutions: [Set<BoardPosition>] = [
+  // top row
+  [.topLeft, .topCenter, .topRight],
+  // center row
+  [.centerLeft, .center, .centerRight],
+  // bottom row
+  [.bottomLeft, .bottomCenter, .bottomRight],
+  // left column
+  [.topLeft, .centerLeft, .bottomLeft],
+  // middle column
+  [.topCenter, .center, .bottomCenter],
+  // right column
+  [.topRight, .centerRight, .bottomRight],
+  // diagal left-to-right
+  [.topLeft, .center, .bottomRight],
+  // diagonal right-to-left
+  [.topRight, .center, .bottomLeft]
+]
+
 class TicTacToe {
 
   // Some state
@@ -67,10 +86,33 @@ class TicTacToe {
     return " "
   }
 
-  func start() {
-    var i = 0
+  func isGameOver() -> Bool {
+    var result = false
 
-    while i < 9 {
+    // Checks all player moves against possible solution sets
+    possibleSolutions.forEach({ solution in
+        if playerOneMoves.isSuperset(of: solution) {
+          print("Game over! Player 1 wins!!")
+          result = true
+
+        } else if playerTwoMoves.isSuperset(of: solution) {
+          print("Game over! Player 2 wins!!")
+          result = true
+        }
+    })
+
+    if result == false && remainingMoves.count == 0 {
+      print("Doh! No one wins :-(")
+      result = true
+    }
+
+    return result
+  }
+
+  func start() {
+
+    while !isGameOver() {
+
       print("------------------")
       print("Player \(player ? "one" : "two") pick a board position:")
       let text = readLine()
@@ -90,9 +132,6 @@ class TicTacToe {
 
           print("Position: \(position)")
           printBoard()
-
-          // Next move
-          i = i + 1
 
           // Toggle player
           player = !player
