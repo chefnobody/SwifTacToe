@@ -14,21 +14,29 @@ class TicTacToe {
 
   // Some state
   var player: Bool = true
-  var playerOneMoves:[BoardPosition] = []
-  var playerTwoMoves:[BoardPosition] = []
+  var playerOneMoves: Set<BoardPosition> = []
+  var playerTwoMoves: Set<BoardPosition> = []
 
-  let validMoves:[String: BoardPosition] = [
-    "TL": BoardPosition.topLeft,
-    "TC": BoardPosition.topCenter,
-    "TR": BoardPosition.topRight,
-    "CL": BoardPosition.centerLeft,
-    "C": BoardPosition.center,
-    "CR": BoardPosition.centerRight,
-    "BL": BoardPosition.bottomLeft,
-    "BC": BoardPosition.bottomCenter,
-    "BR": BoardPosition.bottomRight
+  var remainingMoves: Set<BoardPosition> = [
+    .topLeft, .topCenter, .topRight,
+    .centerLeft, .center, .centerRight,
+    .bottomLeft, .bottomCenter, .bottomRight
+  ]
+
+  let possibleMoves:[String: BoardPosition] = [
+    "TL": .topLeft,
+    "TC": .topCenter,
+    "TR": .topRight,
+    "CL": .centerLeft,
+    "C": .center,
+    "CR": .centerRight,
+    "BL": .bottomLeft,
+    "BC": .bottomCenter,
+    "BR": .bottomRight
   ]
  
+  // Functions
+
   func printBoard() {
     printTopRow()
     print("-----------")
@@ -63,23 +71,37 @@ class TicTacToe {
     var i = 0
 
     while i < 9 {
+      print("------------------")
       print("Player \(player ? "one" : "two") pick a board position:")
       let text = readLine()
 
-      if let position = validMoves[text!] {
-        if player {
-          playerOneMoves.append(position)
+      if let position = possibleMoves[text!] {
+
+        // Validate move
+        if remainingMoves.contains(position) {
+          remainingMoves.remove(position)
+
+          // Assign move to player
+          if player {
+            playerOneMoves.insert(position)
+          } else {
+            playerTwoMoves.insert(position)
+          }
+
+          print("Position: \(position)")
+          printBoard()
+
+          // Next move
+          i = i + 1
+
+          // Toggle player
+          player = !player
+
         } else {
-          playerTwoMoves.append(position)
+          print("Position: \(text!) is taken. Try again!")
         }
-
-        print("Position: \(position)")
-        printBoard()
-        i = i + 1
-        player = !player
-
       } else {
-        print("eh? \(text!)")
+        print("'\(text!)' is not a valid position on the game board. Try again!'")
       }
     }
   }
