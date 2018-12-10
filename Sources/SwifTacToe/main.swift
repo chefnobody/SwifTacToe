@@ -1,3 +1,5 @@
+import Foundation
+
 enum BoardPosition: Int {
   case topLeft = 1
   case topCenter = 2
@@ -55,6 +57,31 @@ class TicTacToe {
   ]
  
   // Functions
+  func printDocs() {
+    print("SwifTacToe")
+    print("-----------")
+    print("")
+    print("GENERAL RULES:")
+    print("- Game play: Player 1 and Player 2 take turns selecting a board position.")
+    print("- Player 1 is represented by an 'X' and Player 2 is represented by 'O'.")
+    print("- The game is over when either Player connects three board positions.")
+    print("")
+    print("BOARD POSITIONS:")
+    print("")
+    print("To select a board position, at the prompt type one of the Symbols below.")
+    print("")
+    print("Symbol: Meaning")
+    print("---------------")
+    print("TL: Top-left")
+    print("TC: Top-center")
+    print("TR: Top-right")
+    print("CL: Center-left")
+    print("C: Center")
+    print("CR: Center-right")
+    print("BL: Bottom-left")
+    print("BC: Bottom-center")
+    print("BR: Bottom-right")
+  }
 
   func printBoard() {
     printTopRow()
@@ -111,6 +138,15 @@ class TicTacToe {
 
   func start() {
 
+    if CommandLine.argc > 1 {
+      if CommandLine.arguments[1] == "--help" || CommandLine.arguments[1] == "-H" {
+        printDocs()
+      } else {
+        print("Option \(CommandLine.arguments[1]) not recognized.")
+      }
+      return
+    }
+    
     while !isGameOver() {
 
       print("------------------")
