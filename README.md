@@ -50,6 +50,7 @@ BR: Bottom-right
 
 ```
 
+Inspiration: [Recurse Center Pairing Interview Tasks](https://www.recurse.com/pairing-tasks)
 
+### Future Refactor Considerations
 
-_Inspired by the [Recurse Center Pairing Interview Tasks](https://www.recurse.com/pairing-tasks)_
